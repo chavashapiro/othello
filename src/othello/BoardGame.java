@@ -12,6 +12,14 @@ public class BoardGame {
 		board = new int[8][8];
 		white = 1;
 		black = 2;
+		board[3][3] = white;
+		board[3][4] = black;
+		board[4][4] = white;
+		board[4][3] = black;
+	}
+
+	public int[][] getBoard() {
+		return board;
 	}
 
 	public ArrayList<String> findPossibleMoves(int currentPlayer)

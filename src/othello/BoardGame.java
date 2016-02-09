@@ -162,8 +162,9 @@ public class BoardGame {
 			otherPlayer = black;
 		}
 
-		int moveRow = move.charAt(0);
-		int moveColumn = move.charAt(1);
+		String[] moveTokens = move.split("");
+		int moveRow = Integer.parseInt(moveTokens[0]);
+		int moveColumn = Integer.parseInt(moveTokens[1]);
 
 		// up
 		row = moveRow;

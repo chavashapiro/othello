@@ -48,6 +48,10 @@ public class BoardGui extends JFrame{
 		completePanel = new JPanel();
 		completePanel.setLayout(new BorderLayout());
 		
+		JPanel header = new JPanel();
+		header.setLayout(new BorderLayout());
+		
+
 		board = new JPanel();
 		board.setLayout(new GridLayout(8,8));
 		
@@ -120,8 +124,7 @@ public class BoardGui extends JFrame{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						String move = String.valueOf(column);
-						move = move + String.valueOf(row);
+						String move = String.valueOf(column) + String.valueOf(row);
 						logicBoard.takeTurn(player, move);
 						gamePieces();
 						if (player == 1){

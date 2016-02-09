@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -16,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class BoardGui extends JFrame{
@@ -71,8 +71,10 @@ public class BoardGui extends JFrame{
 		othello.setForeground(Color.WHITE);
 		othello.setFont(new Font(othello.getFont().getName(), othello.getFont().getStyle(), 48));	
 		
-		String text = "Object of the game is to get the majority of the color disks at the end of "
-				+ "the game. \n To Play: Click on one of the boxes to place disk. ";
+		String text = " Object of the game is to get the majority of the color disks at the end of "
+				+ "the game. \n To Play: Click on one of the boxes to place disk. At least one disk"
+				+ "must flip each turn.  If there are no legal moves player takes a pass.  \n End of "
+				+ "game: All the places are filled or there are no more legal moves. \n\n";
 		JTextArea info = new JTextArea(text);
 		info.setLineWrap(true);
 		info.setWrapStyleWord(true);
@@ -171,6 +173,15 @@ public class BoardGui extends JFrame{
 		}
 		whitePoints.setText(String.valueOf(whiteScore));
 		blackPoints.setText(String.valueOf(blackScore));
+		try {
+			ArrayList<String>possibleMoves = logicBoard.findPossibleMoves(player);
+			for (String hint :possibleMoves){
+				int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
+			}
+		} catch (NoMovesException e) {
+			System.out.println("game over");
+		}
+	
 	}
 	
 	public static void main(String[]args){

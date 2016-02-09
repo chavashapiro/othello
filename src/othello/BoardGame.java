@@ -152,7 +152,7 @@ public class BoardGame {
 		return moves;
 	}
 
-	public ArrayList<String> takeTurn(int currentPlayer, String move) {
+	public void takeTurn(int currentPlayer, String move) {
 		ArrayList<String> spaces = new ArrayList<String>();
 		int otherPlayer, row, column;
 
@@ -293,7 +293,7 @@ public class BoardGame {
 			column = space.charAt(1);
 			board[row][column] = currentPlayer;
 		}
-		return spaces;
+		//return spaces;
 	}
 
 }

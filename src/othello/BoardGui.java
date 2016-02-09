@@ -117,9 +117,9 @@ public class BoardGui extends JFrame{
 		initialSetup();
 		
 		for (int i = 0; i < 8; i++){
-			int column = i;
+			int row = i;
 			for (int j = 0; j < 8; j++){
-				int row = j;
+				int column = j;
 				gameBoard[i][j].addActionListener(new ActionListener(){
 
 					@Override

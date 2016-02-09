@@ -114,7 +114,7 @@ public class BoardGui extends JFrame{
 		player = 1;
 		
 		//create game, initial setup
-		gamePieces();
+		initialSetup();
 		
 		for (int i = 0; i < 8; i++){
 			int column = i;
@@ -124,7 +124,7 @@ public class BoardGui extends JFrame{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						String move = String.valueOf(column) + String.valueOf(row);
+						String move = String.valueOf(row) + String.valueOf(column);
 						logicBoard.takeTurn(player, move);
 						gamePieces();
 						if (player == 1){
@@ -148,6 +148,37 @@ public class BoardGui extends JFrame{
 	
 	
 	public void gamePieces(){
+		whiteScore = 0;
+		blackScore = 0;
+		for (int i = 0; i < 8; i++){
+			for (int j = 0; j < 8; j++){
+				if (logicBoard.getBoard()[i][j] == 0){
+					gameBoard[i][j].setIcon(empty);
+				}
+				else if (logicBoard.getBoard()[i][j] == 1){
+					gameBoard[i][j].setIcon(white);
+					whiteScore++;
+				}
+				else{
+					gameBoard[i][j].setIcon(black);
+					blackScore++;
+				}
+			}
+		}
+		whitePoints.setText(String.valueOf(whiteScore));
+		blackPoints.setText(String.valueOf(blackScore));
+		try {
+			ArrayList<String>possibleMoves = logicBoard.findPossibleMoves(player);
+			for (String hint :possibleMoves){
+				int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
+			}
+		} catch (NoMovesException e) {
+			System.out.println("game over");
+		}
+	
+	}
+	
+	public void initialSetup(){
 		whiteScore = 0;
 		blackScore = 0;
 		for (int i = 0; i < 8; i++){
@@ -184,7 +215,6 @@ public class BoardGui extends JFrame{
 		} catch (NoMovesException e) {
 			System.out.println("game over");
 		}
-	
 	}
 	
 	public static void main(String[]args){

@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class BoardGui extends JFrame{
@@ -38,7 +37,7 @@ public class BoardGui extends JFrame{
 		completePanel = new JPanel();
 		completePanel.setLayout(new BorderLayout());
 		
-		JPanel header = new JPanel();
+		header = new JPanel();
 		header.setLayout(new BorderLayout());
 		
 		board = new JPanel();
@@ -65,8 +64,7 @@ public class BoardGui extends JFrame{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						String move = String.valueOf(column);
-						move = move + String.valueOf(row);
+						String move = String.valueOf(column) + String.valueOf(row);
 						logicBoard.takeTurn(player, move);
 						gamePieces();
 						if (player == 1){

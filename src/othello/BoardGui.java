@@ -81,28 +81,7 @@ public class BoardGui extends JFrame{
 				});
 			}
 		}
-				/*gameBoard[i][j] = new JButton(empty);
-				gameBoard[i][j].setPreferredSize(new Dimension(100,100));
-				gameBoard[i][j].setBorder(new LineBorder(Color.BLACK, 1));
-				gameBoard[i][j].addActionListener(new ActionListener(){
 
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						String move = String.valueOf(i);
-						move = move + String.valueOf(j);
-						logicBoard.takeTurn(1, move);
-						
-					}
-					
-				});
-				board.add(gameBoard[i][j]);
-			}	
-		}
-		gameBoard[3][4].setIcon(black);
-		gameBoard[3][3].setIcon(white);
-		gameBoard[4][4].setIcon(white);
-		gameBoard[4][3].setIcon(black);
-		*/
 		completePanel.add(header, BorderLayout.NORTH);
 		completePanel.add(board, BorderLayout.CENTER);
 		getContentPane().add(completePanel);

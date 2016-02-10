@@ -173,7 +173,7 @@ public class BoardGame {
 		while (row - 1 > 0 && board[row - 1][column] == otherPlayer) {
 			row--;
 		}
-		if (row - 1 >= 0 && board[row - 1][column] == otherPlayer) {
+		if (row - 1 >= 0 && board[row][column] == otherPlayer) {
 			while (row < moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row++;
@@ -203,7 +203,7 @@ public class BoardGame {
 		if (column - 1 >= 0 && board[row][column] == otherPlayer) {
 			while (column < moveColumn) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
-				column--;
+				column++;
 			}
 		}
 

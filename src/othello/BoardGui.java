@@ -52,6 +52,7 @@ public class BoardGui extends JFrame {
 	public BoardGui() {
 		setTitle("Othello");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 
 		completePanel = new JPanel();
 		completePanel.setLayout(new BorderLayout());

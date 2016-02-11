@@ -9,7 +9,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -43,7 +45,7 @@ public class BoardGui extends JFrame {
 	private JLabel blackPoints;
 	private JLabel player1;
 	private JLabel player2;
-	
+
 	private JButton againstCom;
 	private boolean againstComputer;
 
@@ -59,7 +61,7 @@ public class BoardGui extends JFrame {
 
 		board = new JPanel();
 		board.setLayout(new GridLayout(8, 8));
-		
+
 		centerSideBar = new JPanel();
 		centerSideBar.setLayout(new BorderLayout());
 		centerSideBar.setBackground(Color.BLACK);
@@ -81,16 +83,16 @@ public class BoardGui extends JFrame {
 
 		againstComputer = false;
 		againstCom = new JButton("Play Against Computer");
-		againstCom.addActionListener(new ActionListener(){
+		againstCom.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				againstComputer = true;
-				
+
 			}
-			
+
 		});
-		
+
 		JLabel othello = new JLabel(" OTHELLO ");
 		othello.setForeground(Color.WHITE);
 		othello.setFont(new Font(othello.getFont().getName(), othello.getFont().getStyle(), 48));
@@ -106,39 +108,47 @@ public class BoardGui extends JFrame {
 		info.setForeground(Color.WHITE);
 		info.setBackground(Color.BLACK);
 
+		JLabel whitePiece = new JLabel(white);
 		whitePoints = new JLabel(String.valueOf(whiteScore));
-		whitePoints.setForeground(Color.WHITE);
+		whitePoints.setForeground(Color.BLACK);
 		whitePoints.setFont(new Font(whitePoints.getFont().getName(), whitePoints.getFont().getStyle(), 24));
-		
+		whitePoints.setHorizontalAlignment(JLabel.CENTER);
+
+		whitePiece.setLayout(new BorderLayout());
+		whitePiece.add(whitePoints);
+
+		JLabel blackPiece = new JLabel(black);
 		blackPoints = new JLabel(String.valueOf(blackScore));
 		blackPoints.setForeground(Color.WHITE);
 		blackPoints.setFont(new Font(blackPoints.getFont().getName(), blackPoints.getFont().getStyle(), 24));
-		
+		blackPoints.setHorizontalAlignment(JLabel.CENTER);
+
+		blackPiece.setLayout(new BorderLayout());
+		blackPiece.add(blackPoints);
+
 		player1 = new JLabel("Player 1");
 		player1.setForeground(Color.WHITE);
 		player1.setFont(new Font(player1.getFont().getName(), player1.getFont().getStyle(), 24));
-		
+
 		player2 = new JLabel("Player 2");
 		player2.setForeground(Color.WHITE);
 		player2.setFont(new Font(player2.getFont().getName(), player2.getFont().getStyle(), 24));
-		
+
 		JPanel blackBox = new JPanel();
 		blackBox.setBackground(Color.BLACK);
 		blackBox.setLayout(new BoxLayout(blackBox, BoxLayout.Y_AXIS));
 		blackBox.add(player2);
-		blackBox.add(new JLabel(black));
-		blackBox.add(blackPoints);
+		blackBox.add(blackPiece);
 
 		JPanel whiteBox = new JPanel();
 		whiteBox.setBackground(Color.BLACK);
 		whiteBox.setLayout(new BoxLayout(whiteBox, BoxLayout.Y_AXIS));
 		whiteBox.add(player1);
-		whiteBox.add(new JLabel(white));
-		whiteBox.add(whitePoints);
+		whiteBox.add(whitePiece);
 
 		scores.add(whiteBox);
 		scores.add(blackBox);
-		
+
 		centerSideBar.add(scores, BorderLayout.CENTER);
 		centerSideBar.add(againstCom, BorderLayout.SOUTH);
 
@@ -169,28 +179,15 @@ public class BoardGui extends JFrame {
 						} else {
 							player = 1;
 						}
-
-							if (againstComputer == true){
-						try {
-							//need to make delay for computer's turn 
-							ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
-							int numOfChoices = possibleMoves.size();
-							Random rand = new Random();
-							int randomNum = rand.nextInt(numOfChoices);
-							String computerMove = possibleMoves.get(randomNum);
-							System.out.println(randomNum);
-							logicBoard.takeTurn(player, computerMove);
-							gamePieces();
-							if (player == 1) {
-								player = 2;
-							} else {
-								player = 1;
-							}
-						} catch (NoMovesException e) {
-							System.out.println("no moves");
+						try{
+							TimeUnit.SECONDS.sleep(10);
 						}
-							}
-						
+						catch (InterruptedException ie) {
+							System.out.println("Computer's Turn");
+						}
+						if (againstComputer == true) {
+							computersTurn();
+						}
 					}
 
 				});
@@ -276,6 +273,32 @@ public class BoardGui extends JFrame {
 			System.out.println("game over");
 		}
 	}
+
+	public void computersTurn() {
+		try {
+			//Thread.sleep(1000);
+			// need to make delay for computer's turn
+			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
+			int numOfChoices = possibleMoves.size();
+			Random rand = new Random();
+			int randomNum = rand.nextInt(numOfChoices);
+			String computerMove = possibleMoves.get(randomNum);
+			System.out.println(randomNum);
+			logicBoard.takeTurn(player, computerMove);
+			gamePieces();
+			if (player == 1) {
+				player = 2;
+			} else {
+				player = 1;
+			}
+		} catch (NoMovesException e) {
+			System.out.println("no moves");
+		} //catch (InterruptedException ie) {
+		//	System.out.println("Computer's Turn");
+		//}
+	}
+
+
 
 	public static void main(String[] args) {
 		BoardGui boardGui = new BoardGui();

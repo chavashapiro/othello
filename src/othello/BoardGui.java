@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -32,6 +33,7 @@ public class BoardGui extends JFrame {
 	private JPanel sideBar;
 	private JPanel board;
 	private JPanel scores;
+	private JPanel centerSideBar;
 
 	private BoardGame logicBoard;
 	private int player;
@@ -39,6 +41,11 @@ public class BoardGui extends JFrame {
 	private int whiteScore;
 	private JLabel whitePoints;
 	private JLabel blackPoints;
+	private JLabel player1;
+	private JLabel player2;
+	
+	private JButton againstCom;
+	private boolean againstComputer;
 
 	public BoardGui() {
 		setTitle("Othello");
@@ -52,6 +59,10 @@ public class BoardGui extends JFrame {
 
 		board = new JPanel();
 		board.setLayout(new GridLayout(8, 8));
+		
+		centerSideBar = new JPanel();
+		centerSideBar.setLayout(new BorderLayout());
+		centerSideBar.setBackground(Color.BLACK);
 
 		scores = new JPanel();
 		scores.setLayout(new FlowLayout());
@@ -68,42 +79,72 @@ public class BoardGui extends JFrame {
 		sideBar = new JPanel();
 		sideBar.setLayout(new BorderLayout());
 
+		againstComputer = false;
+		againstCom = new JButton("Play Against Computer");
+		againstCom.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				againstComputer = true;
+				
+			}
+			
+		});
+		
 		JLabel othello = new JLabel(" OTHELLO ");
 		othello.setForeground(Color.WHITE);
 		othello.setFont(new Font(othello.getFont().getName(), othello.getFont().getStyle(), 48));
 
-		String text = " Object of the game is to get the majority of the color disks at the end of "
-				+ "the game. \n To Play: Click on one of the boxes to place disk. At least one disk"
+		String text = "\n Object of the game is to get the majority of the color disks at the end of "
+				+ "the game. \n To Play: Click on one of the boxes to place disk. At least one disk "
 				+ "must flip each turn.  If there are no legal moves player takes a pass.  \n End of "
-				+ "game: All the places are filled or there are no more legal moves. \n\n";
+				+ "game: All the places are filled or there are no more legal moves. \n";
 		JTextArea info = new JTextArea(text);
 		info.setLineWrap(true);
 		info.setWrapStyleWord(true);
-		info.setFont(new Font(info.getFont().getName(), info.getFont().getStyle(), 14));
+		info.setFont(new Font(info.getFont().getName(), info.getFont().getStyle(), 20));
 		info.setForeground(Color.WHITE);
 		info.setBackground(Color.BLACK);
 
 		whitePoints = new JLabel(String.valueOf(whiteScore));
-		blackPoints = new JLabel(String.valueOf(blackScore));
+		whitePoints.setForeground(Color.WHITE);
 		whitePoints.setFont(new Font(whitePoints.getFont().getName(), whitePoints.getFont().getStyle(), 24));
+		
+		blackPoints = new JLabel(String.valueOf(blackScore));
+		blackPoints.setForeground(Color.WHITE);
 		blackPoints.setFont(new Font(blackPoints.getFont().getName(), blackPoints.getFont().getStyle(), 24));
-
+		
+		player1 = new JLabel("Player 1");
+		player1.setForeground(Color.WHITE);
+		player1.setFont(new Font(player1.getFont().getName(), player1.getFont().getStyle(), 24));
+		
+		player2 = new JLabel("Player 2");
+		player2.setForeground(Color.WHITE);
+		player2.setFont(new Font(player2.getFont().getName(), player2.getFont().getStyle(), 24));
+		
 		JPanel blackBox = new JPanel();
+		blackBox.setBackground(Color.BLACK);
 		blackBox.setLayout(new BoxLayout(blackBox, BoxLayout.Y_AXIS));
+		blackBox.add(player2);
 		blackBox.add(new JLabel(black));
 		blackBox.add(blackPoints);
 
 		JPanel whiteBox = new JPanel();
+		whiteBox.setBackground(Color.BLACK);
 		whiteBox.setLayout(new BoxLayout(whiteBox, BoxLayout.Y_AXIS));
+		whiteBox.add(player1);
 		whiteBox.add(new JLabel(white));
 		whiteBox.add(whitePoints);
 
-		scores.add(blackBox);
 		scores.add(whiteBox);
+		scores.add(blackBox);
+		
+		centerSideBar.add(scores, BorderLayout.CENTER);
+		centerSideBar.add(againstCom, BorderLayout.SOUTH);
 
 		sideBar.add(othello, BorderLayout.NORTH);
 		sideBar.add(info, BorderLayout.SOUTH);
-		sideBar.add(scores, BorderLayout.CENTER);
+		sideBar.add(centerSideBar, BorderLayout.CENTER);
 		sideBar.setBackground(Color.BLACK);
 
 		logicBoard = new BoardGame();
@@ -129,6 +170,27 @@ public class BoardGui extends JFrame {
 							player = 1;
 						}
 
+							if (againstComputer == true){
+						try {
+							//need to make delay for computer's turn 
+							ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
+							int numOfChoices = possibleMoves.size();
+							Random rand = new Random();
+							int randomNum = rand.nextInt(numOfChoices);
+							String computerMove = possibleMoves.get(randomNum);
+							System.out.println(randomNum);
+							logicBoard.takeTurn(player, computerMove);
+							gamePieces();
+							if (player == 1) {
+								player = 2;
+							} else {
+								player = 1;
+							}
+						} catch (NoMovesException e) {
+							System.out.println("no moves");
+						}
+							}
+						
 					}
 
 				});

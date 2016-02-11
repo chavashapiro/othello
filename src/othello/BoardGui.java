@@ -173,18 +173,27 @@ public class BoardGui extends JFrame {
 					public void actionPerformed(ActionEvent arg0) {
 						String move = String.valueOf(row) + String.valueOf(column);
 						logicBoard.takeTurn(player, move);
+						int tempWhiteScore = whiteScore;
+						int tempBlackScore = blackScore;
 						gamePieces();
+						//if move not valid, give player another turn
+						if (tempWhiteScore == whiteScore && tempBlackScore == blackScore){
+							if (player == 1){
+								player = 2;
+							}
+							else{
+								player = 1;
+							}
+						}
+						
+						
+						//switch turns
 						if (player == 1) {
 							player = 2;
 						} else {
 							player = 1;
 						}
-						try{
-							TimeUnit.SECONDS.sleep(10);
-						}
-						catch (InterruptedException ie) {
-							System.out.println("Computer's Turn");
-						}
+						
 						if (againstComputer == true) {
 							computersTurn();
 						}

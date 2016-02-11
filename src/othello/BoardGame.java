@@ -41,106 +41,127 @@ public class BoardGame {
 					// test up
 					row = i;
 					column = j;
-					while (row - 1 >= 0
-							&& board[row - 1][column] == otherPlayer) {
-						row--;
-					}
-					if (row - 1 >= 0) {
-						move = String.valueOf(row - 1) + String.valueOf(column);
-						moves.add(move);
+					if (board[row - 1][column] == otherPlayer) {
+						while (row - 1 >= 0
+								&& board[row - 1][column] == otherPlayer) {
+							row--;
+						}
+						if (row - 1 >= 0) {
+							move = String.valueOf(row - 1)
+									+ String.valueOf(column);
+							moves.add(move);
+						}
 					}
 
 					// test down
 					row = i;
 					column = j;
-					while (row + 1 < board.length
-							&& board[row + 1][column] == otherPlayer) {
-						row++;
-					}
-					if (row + 1 < board.length) {
-						move = String.valueOf(row + 1) + String.valueOf(column);
-						moves.add(move);
+					if (board[row + 1][column] == otherPlayer) {
+						while (row + 1 < board.length
+								&& board[row + 1][column] == otherPlayer) {
+							row++;
+						}
+						if (row + 1 < board.length) {
+							move = String.valueOf(row + 1)
+									+ String.valueOf(column);
+							moves.add(move);
+						}
 					}
 
 					// test left
 					row = i;
 					column = j;
-					while (column - 1 >= 0
-							&& board[row][column - 1] == otherPlayer) {
-						column--;
-					}
-					if (column - 1 >= 0) {
-						move = String.valueOf(row) + String.valueOf(column - 1);
-						moves.add(move);
+					if (board[row][column - 1] == otherPlayer) {
+						while (column - 1 >= 0
+								&& board[row][column - 1] == otherPlayer) {
+							column--;
+						}
+						if (column - 1 >= 0) {
+							move = String.valueOf(row)
+									+ String.valueOf(column - 1);
+							moves.add(move);
+						}
 					}
 
 					// test right
 					row = i;
 					column = j;
-					while (column + 1 < board[0].length
-							&& board[row][column + 1] == otherPlayer) {
-						column++;
-					}
-					if (column + 1 < board[0].length) {
-						move = String.valueOf(row) + String.valueOf(column + 1);
-						moves.add(move);
+					if (board[row][column + 1] == otherPlayer) {
+						while (column + 1 < board[0].length
+								&& board[row][column + 1] == otherPlayer) {
+							column++;
+						}
+						if (column + 1 < board[0].length) {
+							move = String.valueOf(row)
+									+ String.valueOf(column + 1);
+							moves.add(move);
+						}
 					}
 
 					// test diagonal up and left
 					row = i;
 					column = j;
-					while (row - 1 >= 0 && column - 1 >= 0
-							&& board[row - 1][column - 1] == otherPlayer) {
-						row--;
-						column--;
-					}
-					if (row - 1 >= 0 && column - 1 >= 0) {
-						move = String.valueOf(row - 1)
-								+ String.valueOf(column - 1);
-						moves.add(move);
+					if (board[row - 1][column - 1] == otherPlayer) {
+						while (row - 1 >= 0 && column - 1 >= 0
+								&& board[row - 1][column - 1] == otherPlayer) {
+							row--;
+							column--;
+						}
+						if (row - 1 >= 0 && column - 1 >= 0) {
+							move = String.valueOf(row - 1)
+									+ String.valueOf(column - 1);
+							moves.add(move);
+						}
 					}
 
 					// test diagonal down and left
 					row = i;
 					column = j;
-					while (row + 1 < board.length && column - 1 >= 0
-							&& board[row + 1][column - 1] == otherPlayer) {
-						row++;
-						column--;
-					}
-					if (row + 1 < board.length && column - 1 >= 0) {
-						move = String.valueOf(row + 1)
-								+ String.valueOf(column - 1);
-						moves.add(move);
+					if (board[row + 1][column - 1] == otherPlayer) {
+						while (row + 1 < board.length && column - 1 >= 0
+								&& board[row + 1][column - 1] == otherPlayer) {
+							row++;
+							column--;
+						}
+						if (row + 1 < board.length && column - 1 >= 0) {
+							move = String.valueOf(row + 1)
+									+ String.valueOf(column - 1);
+							moves.add(move);
+						}
 					}
 
 					// test diagonal up and right
 					row = i;
 					column = j;
-					while (row - 1 >= 0 && column + 1 < board[0].length
-							&& board[row - 1][column + 1] == otherPlayer) {
-						row--;
-						column++;
-					}
-					if (row - 1 >= 0 && column + 1 < board[0].length) {
-						move = String.valueOf(row - 1)
-								+ String.valueOf(column + 1);
-						moves.add(move);
+					if (board[row - 1][column + 1] == otherPlayer) {
+						while (row - 1 >= 0 && column + 1 < board[0].length
+								&& board[row - 1][column + 1] == otherPlayer) {
+							row--;
+							column++;
+						}
+						if (row - 1 >= 0 && column + 1 < board[0].length) {
+							move = String.valueOf(row - 1)
+									+ String.valueOf(column + 1);
+							moves.add(move);
+						}
 					}
 
 					// test diagonal down and right
 					row = i;
 					column = j;
-					while (row + 1 < board.length
-							&& column + 1 < board[0].length
-							&& board[row + 1][column + 1] == otherPlayer) {
-						row++;
-						column++;
-					}
-					if (row + 1 < board.length && column + 1 < board[0].length) {
-						move = String.valueOf(row + 1)
-								+ String.valueOf(column + 1);
-						moves.add(move);
+					if (board[row + 1][column + 1] == otherPlayer) {
+						while (row + 1 < board.length
+								&& column + 1 < board[0].length
+								&& board[row + 1][column + 1] == otherPlayer) {
+							row++;
+							column++;
+						}
+						if (row + 1 < board.length
+								&& column + 1 < board[0].length) {
+							move = String.valueOf(row + 1)
+									+ String.valueOf(column + 1);
+							moves.add(move);
+						}
 					}
 				}
 			}
@@ -170,10 +191,15 @@ public class BoardGame {
 		row = moveRow;
 		column = moveColumn;
 
-		while (row - 1 > 0 && board[row - 1][column] == otherPlayer) {
-			row--;
+		if (row - 1 > 0) {
+			while (board[row - 1][column] == otherPlayer) {
+				row--;
+				if (row - 1 < 0) {
+					break;
+				}
+			}
 		}
-		if (row - 1 >= 0 && board[row][column] == otherPlayer) {
+		if (row - 1 >= 0 && board[row - 1][column] == currentPlayer) {
 			while (row < moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row++;
@@ -183,11 +209,15 @@ public class BoardGame {
 		// down
 		row = moveRow;
 		column = moveColumn;
-		while (row + 1 < board.length - 1
-				&& board[row + 1][column] == otherPlayer) {
-			row++;
+		if (row + 1 < board.length - 1) {
+			while (board[row + 1][column] == otherPlayer) {
+				row++;
+				if (row + 1 >= board.length) {
+					break;
+				}
+			}
 		}
-		if (row + 1 < board.length && board[row][column] == otherPlayer) {
+		if (row + 1 < board.length && board[row + 1][column] == currentPlayer) {
 			while (row > moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row--;
@@ -197,10 +227,15 @@ public class BoardGame {
 		// left
 		row = moveRow;
 		column = moveColumn;
-		while (column - 1 > 0 && board[row][column - 1] == otherPlayer) {
-			column--;
+		if (column - 1 > 0) {
+			while (board[row][column - 1] == otherPlayer) {
+				column--;
+				if (column - 1 < 0) {
+					break;
+				}
+			}
 		}
-		if (column - 1 >= 0 && board[row][column] == otherPlayer) {
+		if (column - 1 >= 0 && board[row][column - 1] == currentPlayer) {
 			while (column < moveColumn) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				column++;
@@ -210,12 +245,17 @@ public class BoardGame {
 		// right
 		row = moveRow;
 		column = moveColumn;
-		while (column + 1 < board[0].length - 1
-				&& board[row][column + 1] == otherPlayer) {
-			column++;
+		if (column + 1 < board[0].length - 1) {
+			while (board[row][column + 1] == otherPlayer) {
+				column++;
+				if (column + 1 >= board[0].length) {
+					break;
+				}
+			}
 		}
-		if (column + 1 < board[0].length && board[row][column] == otherPlayer) {
-			while (row > moveRow) {
+		if (column + 1 < board[0].length
+				&& board[row][column + 1] == currentPlayer) {
+			while (column > moveColumn) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				column--;
 			}
@@ -224,13 +264,17 @@ public class BoardGame {
 		// up and left
 		row = moveRow;
 		column = moveColumn;
-		while (row - 1 > 0 && column - 1 > 0
-				&& board[row - 1][column - 1] == otherPlayer) {
-			row--;
-			column--;
+		if (row - 1 > 0 && column - 1 > 0) {
+			while (board[row - 1][column - 1] == otherPlayer) {
+				row--;
+				column--;
+				if (row - 1 < 0 || column - 1 < 0) {
+					break;
+				}
+			}
 		}
 		if (row - 1 >= 0 && column - 1 >= 0
-				&& board[row][column] == otherPlayer) {
+				&& board[row - 1][column - 1] == currentPlayer) {
 			while (row < moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row++;
@@ -241,13 +285,17 @@ public class BoardGame {
 		// down and left
 		row = moveRow;
 		column = moveColumn;
-		while (row + 1 < board.length - 1 && column - 1 > 0
-				&& board[row + 1][column - 1] == otherPlayer) {
-			row++;
-			column--;
+		if (row + 1 < board.length - 1 && column - 1 > 0) {
+			while (board[row + 1][column - 1] == otherPlayer) {
+				row++;
+				column--;
+				if (row + 1 >= board.length || column - 1 < 0) {
+					break;
+				}
+			}
 		}
 		if (row + 1 < board.length && column - 1 >= 0
-				&& board[row][column] == otherPlayer) {
+				&& board[row + 1][column - 1] == currentPlayer) {
 			while (row > moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row--;
@@ -258,30 +306,38 @@ public class BoardGame {
 		// up and right
 		row = moveRow;
 		column = moveColumn;
-		while (row - 1 > 0 && column + 1 < board[0].length - 1
-				&& board[row - 1][column - 1] == otherPlayer) {
-			row--;
-			column++;
+		if (row - 1 > 0 && column + 1 < board[0].length - 1) {
+			while (board[row - 1][column + 1] == otherPlayer) {
+				row--;
+				column++;
+				if (row - 1 < 0 || column + 1 >= board[0].length) {
+					break;
+				}
+			}
 		}
-		if (row - 1 >= 0 && column + 1 < board[0].length
-				&& board[row][column] == otherPlayer) {
+		if (row - 1 > 0 && column + 1 < board[0].length - 1
+				&& board[row - 1][column + 1] == currentPlayer) {
 			while (row < moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row++;
 				column--;
 			}
 		}
-		
+
 		// down and right
 		row = moveRow;
 		column = moveColumn;
-		while (row + 1 < board.length - 1 && column + 1 < board[0].length - 1
-				&& board[row - 1][column - 1] == otherPlayer) {
-			row++;
-			column++;
+		if (row + 1 < board.length - 1 && column + 1 < board[0].length - 1) {
+			while (board[row + 1][column + 1] == otherPlayer) {
+				row++;
+				column++;
+				if (row + 1 >= board.length || column + 1 >= board[0].length) {
+					break;
+				}
+			}
 		}
-		if (row + 1 < board.length && column + 1 <= board[0].length
-				&& board[row][column] == otherPlayer) {
+		if (row + 1 < board.length && column + 1 <= board[0].length - 1
+				&& board[row + 1][column + 1] == currentPlayer) {
 			while (row > moveRow) {
 				spaces.add(String.valueOf(row) + String.valueOf(column));
 				row--;
@@ -289,16 +345,20 @@ public class BoardGame {
 			}
 		}
 
-		//switch all spaces in the array to currentPlayer's color
-		for (String space : spaces) {
-			String[] spaceTokens = space.split("");
-			row = Integer.parseInt(spaceTokens[0]);
-			column = Integer.parseInt(spaceTokens[1]);
-			board[row][column] = currentPlayer;
+		// if spaces size is not 0 meaning there are pieces to be flipped, flip
+		// them and change the piece the player clicked
+		if (spaces.size() != 0) {
+			// switch all spaces in the array to currentPlayer's color
+			for (String space : spaces) {
+				String[] spaceTokens = space.split("");
+				row = Integer.parseInt(spaceTokens[0]);
+				column = Integer.parseInt(spaceTokens[1]);
+				board[row][column] = currentPlayer;
+			}
+			// change the space the player clicked to currentPlayer's color
+			board[moveRow][moveColumn] = currentPlayer;
 		}
-		//change the space the player clicked to currentPlayer's color
-		board[moveRow][moveColumn] = currentPlayer;
-		//return spaces;
+		// return spaces;
 	}
 
 }

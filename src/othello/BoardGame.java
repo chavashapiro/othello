@@ -173,6 +173,9 @@ public class BoardGame {
 		if (row - 1 > 0) {
 			while (board[row - 1][column] == otherPlayer) {
 				row--;
+				if (row - 1 < 0) {
+					break;
+				}
 			}
 		}
 		if (row - 1 >= 0 && board[row - 1][column] == currentPlayer) {
@@ -188,6 +191,9 @@ public class BoardGame {
 		if (row + 1 < board.length - 1) {
 			while (board[row + 1][column] == otherPlayer) {
 				row++;
+				if (row + 1 >= board.length) {
+					break;
+				}
 			}
 		}
 		if (row + 1 < board.length && board[row + 1][column] == currentPlayer) {
@@ -203,6 +209,9 @@ public class BoardGame {
 		if (column - 1 > 0) {
 			while (board[row][column - 1] == otherPlayer) {
 				column--;
+				if (column - 1 < 0) {
+					break;
+				}
 			}
 		}
 		if (column - 1 >= 0 && board[row][column - 1] == currentPlayer) {
@@ -218,6 +227,9 @@ public class BoardGame {
 		if (column + 1 < board[0].length - 1) {
 			while (board[row][column + 1] == otherPlayer) {
 				column++;
+				if (column + 1 >= board[0].length) {
+					break;
+				}
 			}
 		}
 		if (column + 1 < board[0].length
@@ -235,6 +247,9 @@ public class BoardGame {
 			while (board[row - 1][column - 1] == otherPlayer) {
 				row--;
 				column--;
+				if (row - 1 < 0 || column - 1 < 0) {
+					break;
+				}
 			}
 		}
 		if (row - 1 >= 0 && column - 1 >= 0
@@ -253,6 +268,9 @@ public class BoardGame {
 			while (board[row + 1][column - 1] == otherPlayer) {
 				row++;
 				column--;
+				if (row + 1 >= board.length || column - 1 < 0) {
+					break;
+				}
 			}
 		}
 		if (row + 1 < board.length && column - 1 >= 0
@@ -271,6 +289,9 @@ public class BoardGame {
 			while (board[row - 1][column + 1] == otherPlayer) {
 				row--;
 				column++;
+				if (row - 1 < 0 || column + 1 >= board[0].length) {
+					break;
+				}
 			}
 		}
 		if (row - 1 > 0 && column + 1 < board[0].length - 1
@@ -289,6 +310,9 @@ public class BoardGame {
 			while (board[row + 1][column + 1] == otherPlayer) {
 				row++;
 				column++;
+				if (row + 1 >= board.length || column + 1 >= board[0].length) {
+					break;
+				}
 			}
 		}
 		if (row + 1 < board.length && column + 1 <= board[0].length - 1

@@ -2,6 +2,7 @@ package othello;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class BoardGui extends JFrame {
@@ -43,11 +48,12 @@ public class BoardGui extends JFrame {
 	private int whiteScore;
 	private JLabel whitePoints;
 	private JLabel blackPoints;
-	private JLabel player1;
-	private JLabel player2;
+
+	private JLabel playersTurn;
 
 	private JButton againstCom;
 	private boolean againstComputer;
+	private JButton restart;
 
 	public BoardGui() {
 		setTitle("Othello");
@@ -82,8 +88,19 @@ public class BoardGui extends JFrame {
 		sideBar = new JPanel();
 		sideBar.setLayout(new BorderLayout());
 
+		restart = new JButton("Restart");
+		restart.setAlignmentX(Component.CENTER_ALIGNMENT);
+		restart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				restartGame();
+			}
+		});
+
 		againstComputer = false;
 		againstCom = new JButton("Play Against Computer");
+		againstCom.setAlignmentX(Component.CENTER_ALIGNMENT);
 		againstCom.addActionListener(new ActionListener() {
 
 			@Override
@@ -93,6 +110,14 @@ public class BoardGui extends JFrame {
 			}
 
 		});
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(againstCom);
+		buttonPanel.setBackground(Color.BLACK);
+
+		JPanel buttonPanelRestart = new JPanel();
+		buttonPanelRestart.add(restart);
+		buttonPanelRestart.setBackground(Color.BLACK);
 
 		JLabel othello = new JLabel(" OTHELLO ");
 		othello.setForeground(Color.WHITE);
@@ -105,9 +130,12 @@ public class BoardGui extends JFrame {
 		JTextArea info = new JTextArea(text);
 		info.setLineWrap(true);
 		info.setWrapStyleWord(true);
-		info.setFont(new Font(info.getFont().getName(), info.getFont().getStyle(), 20));
+		info.setFont(new Font(info.getFont().getName(), info.getFont().getStyle(), 16));
 		info.setForeground(Color.WHITE);
 		info.setBackground(Color.BLACK);
+
+		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		info.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
 		JLabel whitePiece = new JLabel(white);
 		whitePoints = new JLabel(String.valueOf(whiteScore));
@@ -127,31 +155,37 @@ public class BoardGui extends JFrame {
 		blackPiece.setLayout(new BorderLayout());
 		blackPiece.add(blackPoints);
 
-		player1 = new JLabel("Player 1");
-		player1.setForeground(Color.WHITE);
-		player1.setFont(new Font(player1.getFont().getName(), player1.getFont().getStyle(), 24));
-
-		player2 = new JLabel("Player 2");
-		player2.setForeground(Color.WHITE);
-		player2.setFont(new Font(player2.getFont().getName(), player2.getFont().getStyle(), 24));
-
 		JPanel blackBox = new JPanel();
 		blackBox.setBackground(Color.BLACK);
 		blackBox.setLayout(new BoxLayout(blackBox, BoxLayout.Y_AXIS));
-		blackBox.add(player2);
 		blackBox.add(blackPiece);
 
 		JPanel whiteBox = new JPanel();
 		whiteBox.setBackground(Color.BLACK);
 		whiteBox.setLayout(new BoxLayout(whiteBox, BoxLayout.Y_AXIS));
-		whiteBox.add(player1);
 		whiteBox.add(whitePiece);
+
+		playersTurn = new JLabel("White Player's Turn");
+		playersTurn.setForeground(Color.WHITE);
+		playersTurn.setFont(new Font(playersTurn.getFont().getName(), playersTurn.getFont().getStyle(), 18));
+
+		JPanel turnPlayer = new JPanel();
+		turnPlayer.add(playersTurn);
+		turnPlayer.setBackground(Color.BLACK);
 
 		scores.add(whiteBox);
 		scores.add(blackBox);
 
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+		buttons.setBackground(Color.BLACK);
+		buttons.add(againstCom);
+		buttons.add(Box.createRigidArea(new Dimension(10,10)));
+		buttons.add(restart);
+
+		centerSideBar.add(turnPlayer, BorderLayout.NORTH);
 		centerSideBar.add(scores, BorderLayout.CENTER);
-		centerSideBar.add(againstCom, BorderLayout.SOUTH);
+		centerSideBar.add(buttons, BorderLayout.SOUTH);
 
 		sideBar.add(othello, BorderLayout.NORTH);
 		sideBar.add(info, BorderLayout.SOUTH);
@@ -173,33 +207,25 @@ public class BoardGui extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						String move = String.valueOf(row) + String.valueOf(column);
-						logicBoard.takeTurn(player, move);
-						int tempWhiteScore = whiteScore;
-						int tempBlackScore = blackScore;
-						gamePieces();
-						//if move not valid, give player another turn
-						if (tempWhiteScore == whiteScore && tempBlackScore == blackScore){
-							if (player == 1){
-								player = 2;
+						if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2) {
+							logicBoard.takeTurn(player, move);
+							int tempWhiteScore = whiteScore;
+							int tempBlackScore = blackScore;
+							gamePieces();
+							// if move not valid, give player another turn
+							if (tempWhiteScore == whiteScore && tempBlackScore == blackScore) {
+								if (player == 1) {
+									player = 2;
+
+								} else {
+									player = 1;
+								}
 							}
-							else{
-								player = 1;
+							if (againstComputer == true) {
+								computersTurn();
 							}
-						}
-						
-						
-						//switch turns
-						if (player == 1) {
-							player = 2;
-						} else {
-							player = 1;
-						}
-						
-						if (againstComputer == true) {
-							computersTurn();
 						}
 					}
-
 				});
 			}
 		}
@@ -213,22 +239,30 @@ public class BoardGui extends JFrame {
 	public void gamePieces() {
 		whiteScore = 0;
 		blackScore = 0;
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (logicBoard.getBoard()[i][j] == 0) {
-					gameBoard[i][j].setIcon(empty);
-				} else if (logicBoard.getBoard()[i][j] == 1) {
-					gameBoard[i][j].setIcon(white);
+		for (int row = 0; row < 8; row++) {
+			for (int column = 0; column < 8; column++) {
+				if (logicBoard.getBoard()[row][column] == 0) {
+					gameBoard[row][column].setIcon(empty);
+				} else if (logicBoard.getBoard()[row][column] == 1) {
+					gameBoard[row][column].setIcon(white);
 					whiteScore++;
 				} else {
-					gameBoard[i][j].setIcon(black);
+					gameBoard[row][column].setIcon(black);
 					blackScore++;
 				}
 			}
 		}
 		whitePoints.setText(String.valueOf(whiteScore));
 		blackPoints.setText(String.valueOf(blackScore));
+
 		try {
+			if (player == 1) {
+				player = 2;
+				playersTurn.setText("Black Player's Turn");
+			} else {
+				player = 1;
+				playersTurn.setText("White Player's Turn");
+			}
 			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
 			for (String hint : possibleMoves) {
 				int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
@@ -270,6 +304,7 @@ public class BoardGui extends JFrame {
 		}
 		whitePoints.setText(String.valueOf(whiteScore));
 		blackPoints.setText(String.valueOf(blackScore));
+
 		try {
 			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
 			for (String hint : possibleMoves) {
@@ -282,11 +317,12 @@ public class BoardGui extends JFrame {
 		} catch (NoMovesException e) {
 			System.out.println("game over");
 		}
+
 	}
 
 	public void computersTurn() {
 		try {
-			//Thread.sleep(1000);
+
 			// need to make delay for computer's turn
 			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
 			int numOfChoices = possibleMoves.size();
@@ -303,12 +339,14 @@ public class BoardGui extends JFrame {
 			}
 		} catch (NoMovesException e) {
 			System.out.println("no moves");
-		} //catch (InterruptedException ie) {
-		//	System.out.println("Computer's Turn");
-		//}
+		}
 	}
 
-
+	public void restartGame() {
+		logicBoard = new BoardGame();
+		gamePieces();
+		player = 1;
+	}
 
 	public static void main(String[] args) {
 		BoardGui boardGui = new BoardGui();

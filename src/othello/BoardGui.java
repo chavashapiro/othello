@@ -10,9 +10,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,9 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -197,7 +194,6 @@ public class BoardGui extends JFrame {
 
 		// create game, initial setup
 		initialSetup();
-
 		for (int i = 0; i < 8; i++) {
 			int row = i;
 			for (int j = 0; j < 8; j++) {
@@ -254,8 +250,7 @@ public class BoardGui extends JFrame {
 		}
 		whitePoints.setText(String.valueOf(whiteScore));
 		blackPoints.setText(String.valueOf(blackScore));
-
-		try {
+		//switch player's turn
 			if (player == 1) {
 				player = 2;
 				playersTurn.setText("Black Player's Turn");
@@ -263,6 +258,7 @@ public class BoardGui extends JFrame {
 				player = 1;
 				playersTurn.setText("White Player's Turn");
 			}
+			try {
 			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
 			for (String hint : possibleMoves) {
 				int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
@@ -272,7 +268,7 @@ public class BoardGui extends JFrame {
 				}
 			}
 		} catch (NoMovesException e) {
-			System.out.println("game over");
+			JOptionPane.showMessageDialog(completePanel, "No valid moves.");
 		}
 
 	}
@@ -321,25 +317,8 @@ public class BoardGui extends JFrame {
 	}
 
 	public void computersTurn() {
-		try {
-
-			// need to make delay for computer's turn
-			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
-			int numOfChoices = possibleMoves.size();
-			Random rand = new Random();
-			int randomNum = rand.nextInt(numOfChoices);
-			String computerMove = possibleMoves.get(randomNum);
-			System.out.println(randomNum);
-			logicBoard.takeTurn(player, computerMove);
-			gamePieces();
-			if (player == 1) {
-				player = 2;
-			} else {
-				player = 1;
-			}
-		} catch (NoMovesException e) {
-			System.out.println("no moves");
-		}
+		ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard,whitePoints, blackPoints, playersTurn);
+		thread.start();
 	}
 
 	public void restartGame() {

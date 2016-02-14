@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class BoardGame {
 
 	private int[][] board;
-	private int white;
-	private int black;
+	private final int white;
+	private final int black;
 
 	public BoardGame() {
 		board = new int[8][8];
@@ -363,6 +363,42 @@ public class BoardGame {
 			board[moveRow][moveColumn] = currentPlayer;
 		}
 		// return spaces;
+	}
+
+	// return null if game not over
+	// 0 if it's a tie
+	// 1(white) or 2(black) if they won
+	public Integer isWinner() {
+		int emptySpots = 0, whiteSpots = 0, blackSpots = 0;
+
+		for (int row = 0; row < board.length; row++) {
+			for (int col = 0; col < board[0].length; col++) {
+				if (board[row][col] == white) {
+					whiteSpots++;
+				} else if (board[row][col] == black) {
+					blackSpots++;
+				} else {
+					emptySpots++;
+				}
+			}
+		}
+
+		if (emptySpots == 0) {
+			if (whiteSpots == blackSpots) {
+				return 0;
+			} else if (whiteSpots > blackSpots) {
+				return white;
+			} else {
+				return black;
+			}
+		} else if (whiteSpots == 0) {
+			return black;
+		} else if (blackSpots == 0) {
+			return white;
+		} else {
+			// game not over yet
+			return null;
+		}
 	}
 
 }

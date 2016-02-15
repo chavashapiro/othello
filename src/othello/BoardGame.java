@@ -42,11 +42,11 @@ public class BoardGame {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] == currentPlayer) {
-					
+
 					// test up
 					row = i;
 					column = j;
-					if ( row - 1 >= 0 && board[row - 1][column] == otherPlayer) {
+					if (row - 1 >= 0 && board[row - 1][column] == otherPlayer) {
 						while (row - 1 >= 0
 								&& board[row - 1][column] == otherPlayer) {
 							row--;
@@ -61,7 +61,8 @@ public class BoardGame {
 					// test down
 					row = i;
 					column = j;
-					if (row + 1 < board.length && board[row + 1][column] == otherPlayer) {
+					if (row + 1 < board.length
+							&& board[row + 1][column] == otherPlayer) {
 						while (row + 1 < board.length
 								&& board[row + 1][column] == otherPlayer) {
 							row++;
@@ -76,7 +77,8 @@ public class BoardGame {
 					// test left
 					row = i;
 					column = j;
-					if (column - 1 >= 0 && board[row][column - 1] == otherPlayer) {
+					if (column - 1 >= 0
+							&& board[row][column - 1] == otherPlayer) {
 						while (column - 1 >= 0
 								&& board[row][column - 1] == otherPlayer) {
 							column--;
@@ -91,7 +93,8 @@ public class BoardGame {
 					// test right
 					row = i;
 					column = j;
-					if (column + 1 < board[0].length && board[row][column + 1] == otherPlayer) {
+					if (column + 1 < board[0].length
+							&& board[row][column + 1] == otherPlayer) {
 						while (column + 1 < board[0].length
 								&& board[row][column + 1] == otherPlayer) {
 							column++;
@@ -106,7 +109,8 @@ public class BoardGame {
 					// test diagonal up and left
 					row = i;
 					column = j;
-					if (row - 1 >= 0 && column - 1 >= 0 && board[row - 1][column - 1] == otherPlayer) {
+					if (row - 1 >= 0 && column - 1 >= 0
+							&& board[row - 1][column - 1] == otherPlayer) {
 						while (row - 1 >= 0 && column - 1 >= 0
 								&& board[row - 1][column - 1] == otherPlayer) {
 							row--;
@@ -122,7 +126,8 @@ public class BoardGame {
 					// test diagonal down and left
 					row = i;
 					column = j;
-					if (row + 1 < board.length && column - 1 >= 0 && board[row + 1][column - 1] == otherPlayer) {
+					if (row + 1 < board.length && column - 1 >= 0
+							&& board[row + 1][column - 1] == otherPlayer) {
 						while (row + 1 < board.length && column - 1 >= 0
 								&& board[row + 1][column - 1] == otherPlayer) {
 							row++;
@@ -138,7 +143,8 @@ public class BoardGame {
 					// test diagonal up and right
 					row = i;
 					column = j;
-					if (row - 1 >= 0 && column + 1 < board[0].length && board[row - 1][column + 1] == otherPlayer) {
+					if (row - 1 >= 0 && column + 1 < board[0].length
+							&& board[row - 1][column + 1] == otherPlayer) {
 						while (row - 1 >= 0 && column + 1 < board[0].length
 								&& board[row - 1][column + 1] == otherPlayer) {
 							row--;
@@ -154,7 +160,8 @@ public class BoardGame {
 					// test diagonal down and right
 					row = i;
 					column = j;
-					if (row + 1 < board.length && column + 1 < board[0].length && board[row + 1][column + 1] == otherPlayer) {
+					if (row + 1 < board.length && column + 1 < board[0].length
+							&& board[row + 1][column + 1] == otherPlayer) {
 						while (row + 1 < board.length
 								&& column + 1 < board[0].length
 								&& board[row + 1][column + 1] == otherPlayer) {
@@ -195,7 +202,6 @@ public class BoardGame {
 		// up
 		row = moveRow;
 		column = moveColumn;
-
 		if (row - 1 > 0) {
 			while (board[row - 1][column] == otherPlayer) {
 				row--;

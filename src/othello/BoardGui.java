@@ -21,10 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
 
 public class BoardGui extends JFrame {
 
@@ -53,6 +51,9 @@ public class BoardGui extends JFrame {
 	private JButton againstCom;
 	private boolean againstComputer;
 	private JButton restart;
+
+	private ArrayList<String> possibleMoves;
+	private boolean haveMoves;
 
 	public BoardGui() {
 
@@ -113,7 +114,7 @@ public class BoardGui extends JFrame {
 		});
 
 		JPanel buttonPanel = new JPanel();
-		//buttonPanel.add(againstCom);
+		// buttonPanel.add(againstCom);
 		buttonPanel.setBackground(Color.BLACK);
 
 		JPanel buttonPanelRestart = new JPanel();
@@ -209,7 +210,7 @@ public class BoardGui extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						// get valid moves
-						ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
+						possibleMoves = logicBoard.findPossibleMoves(player);
 						String move = String.valueOf(row) + String.valueOf(column);
 						// check if spot is valid
 						if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2
@@ -222,39 +223,43 @@ public class BoardGui extends JFrame {
 							Integer winner = logicBoard.isWinner();
 							if (winner != null) {
 								displayWinnerDialog(winner);
-							}
-							// if there is no winner
-							// switch players
-							switchPlayers(player);
-							// set hints for next player
-							possibleMoves = logicBoard.findPossibleMoves(player);
-							//displayHints(player);
-							// if no valid moves for next player
-							if (possibleMoves.size() == 0) {
-								JOptionPane.showMessageDialog(completePanel, "No valid moves. Pass");
+							} else {
+								// if there is no winner
 								// switch players
 								switchPlayers(player);
 								// set hints for next player
 								possibleMoves = logicBoard.findPossibleMoves(player);
-								displayHints(player);
-								// if no valid moves for player - game over- no
-								// players have moves - display game winner
-								if (possibleMoves.size() == 0) {
-									// check for winner
-									winner = logicBoard.isWinner();
-									displayWinnerDialog(winner);
-								} else {
+								// if no valid moves for next player
+								haveMoves = noMoves(possibleMoves); 
+								if (haveMoves == false) {
+									JOptionPane.showMessageDialog(completePanel, "No valid moves. Pass");
+									// switch players
+									switchPlayers(player);
+									// set hints for next player
+									possibleMoves = logicBoard.findPossibleMoves(player);
+									// displayHints(player);
+									// if no valid moves for player - game over-
+									// no
+									// players have moves - display game winner
+									haveMoves = noMoves(possibleMoves); 
+									if (haveMoves == false) {
+										// check for winner
+										winner = logicBoard.isWinner();
+										displayWinnerDialog(winner);
+									} else {
+										displayHints(player);
+									}
 									displayHints(player);
 								}
-							}
-							// display valid moves for next player
-							else {
-								displayHints(player);
-							}
-							if (againstComputer == true) {
-								ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard, whitePoints, blackPoints, whiteScore,
-										blackScore, playersTurn);
-								thread.start();
+								// display valid moves for next player
+								else {
+									displayHints(player);
+								}
+								if (againstComputer == true) {
+									ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard,
+											whitePoints, blackPoints, whiteScore, blackScore, playersTurn);
+									thread.start();
+								}
 							}
 						}
 						// spot is not valid - TAKE NO ACTION
@@ -270,8 +275,18 @@ public class BoardGui extends JFrame {
 		pack();
 	}
 
+	public boolean noMoves(ArrayList<String> possibleMoves){
+		for (String move:possibleMoves){
+			int column = Integer.parseInt(String.valueOf(move.charAt(0)));
+			int row = Integer.parseInt(String.valueOf(move.charAt(1)));
+			if (gameBoard[column][row].getIcon() == empty){
+				return true;
+			}
+		}
+		return false;
+	}
 	public void displayHints(int player) {
-		ArrayList<String>possibleMoves = logicBoard.findPossibleMoves(player);
+		ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
 		for (String hint : possibleMoves) {
 			int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
 			int row = Integer.parseInt(String.valueOf(hint.charAt(1)));
@@ -365,11 +380,11 @@ public class BoardGui extends JFrame {
 		}
 	}
 
-
 	public void restartGame() {
 		logicBoard = new BoardGame();
 		gamePieces();
 		player = 1;
+		playersTurn.setText("White Player's Turn");
 		displayHints(player);
 	}
 

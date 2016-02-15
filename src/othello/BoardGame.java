@@ -18,9 +18,6 @@ public class BoardGame {
 		board[4][3] = black;
 	}
 
-	public void setBoard(int[][] board) {
-		this.board = board;
-	}
 
 	public int[][] getBoard() {
 		return board;

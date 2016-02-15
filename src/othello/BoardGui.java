@@ -21,8 +21,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 
 public class BoardGui extends JFrame {
 
@@ -53,6 +55,8 @@ public class BoardGui extends JFrame {
 	private JButton restart;
 
 	public BoardGui() {
+
+		// SETTING UP BOARD GUI//
 		setTitle("Othello");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
@@ -109,7 +113,7 @@ public class BoardGui extends JFrame {
 		});
 
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(againstCom);
+		//buttonPanel.add(againstCom);
 		buttonPanel.setBackground(Color.BLACK);
 
 		JPanel buttonPanelRestart = new JPanel();
@@ -177,7 +181,7 @@ public class BoardGui extends JFrame {
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
 		buttons.setBackground(Color.BLACK);
 		buttons.add(againstCom);
-		buttons.add(Box.createRigidArea(new Dimension(10,10)));
+		buttons.add(Box.createRigidArea(new Dimension(10, 10)));
 		buttons.add(restart);
 
 		centerSideBar.add(turnPlayer, BorderLayout.NORTH);
@@ -194,6 +198,8 @@ public class BoardGui extends JFrame {
 
 		// create game, initial setup
 		initialSetup();
+
+		// set each spot on board as button
 		for (int i = 0; i < 8; i++) {
 			int row = i;
 			for (int j = 0; j < 8; j++) {
@@ -202,25 +208,56 @@ public class BoardGui extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						// get valid moves
+						ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
 						String move = String.valueOf(row) + String.valueOf(column);
-						if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2) {
+						// check if spot is valid
+						if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2
+								&& possibleMoves.contains(move)) {
+							// spot is valid so take turn
 							logicBoard.takeTurn(player, move);
-							int tempWhiteScore = whiteScore;
-							int tempBlackScore = blackScore;
+							// reset gui
 							gamePieces();
-							// if move not valid, give player another turn
-							if (tempWhiteScore == whiteScore && tempBlackScore == blackScore) {
-								if (player == 1) {
-									player = 2;
-
+							// check if there is a winner
+							Integer winner = logicBoard.isWinner();
+							if (winner != null) {
+								displayWinnerDialog(winner);
+							}
+							// if there is no winner
+							// switch players
+							switchPlayers(player);
+							// set hints for next player
+							possibleMoves = logicBoard.findPossibleMoves(player);
+							//displayHints(player);
+							// if no valid moves for next player
+							if (possibleMoves.size() == 0) {
+								JOptionPane.showMessageDialog(completePanel, "No valid moves. Pass");
+								// switch players
+								switchPlayers(player);
+								// set hints for next player
+								possibleMoves = logicBoard.findPossibleMoves(player);
+								displayHints(player);
+								// if no valid moves for player - game over- no
+								// players have moves - display game winner
+								if (possibleMoves.size() == 0) {
+									// check for winner
+									winner = logicBoard.isWinner();
+									displayWinnerDialog(winner);
 								} else {
-									player = 1;
+									displayHints(player);
 								}
 							}
+							// display valid moves for next player
+							else {
+								displayHints(player);
+							}
 							if (againstComputer == true) {
-								computersTurn();
+								ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard, whitePoints, blackPoints, whiteScore,
+										blackScore, playersTurn);
+								thread.start();
 							}
 						}
+						// spot is not valid - TAKE NO ACTION
 					}
 				});
 			}
@@ -228,8 +265,45 @@ public class BoardGui extends JFrame {
 
 		completePanel.add(sideBar, BorderLayout.WEST);
 		completePanel.add(board, BorderLayout.CENTER);
+
 		getContentPane().add(completePanel);
 		pack();
+	}
+
+	public void displayHints(int player) {
+		ArrayList<String>possibleMoves = logicBoard.findPossibleMoves(player);
+		for (String hint : possibleMoves) {
+			int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
+			int row = Integer.parseInt(String.valueOf(hint.charAt(1)));
+			if (gameBoard[column][row].getIcon() == empty) {
+				gameBoard[column][row].setIcon(hintSpot);
+			}
+		}
+	}
+
+	public void displayWinnerDialog(int winner) {
+		String message;
+		if (winner == 0) {
+			message = "Players tied! Great Job!";
+		} else if (winner == 1) {
+			message = "White player won! Great Job!";
+		} else if (winner == 2) {
+			message = "Black player won! Great Job!";
+		} else {
+			message = "Error.  Please replay game!";
+		}
+		JOptionPane.showMessageDialog(completePanel, message);
+	}
+
+	public void switchPlayers(int playerNum) {
+		this.player = playerNum;
+		if (player == 1) {
+			player = 2;
+			playersTurn.setText("Black Player's Turn");
+		} else {
+			player = 1;
+			playersTurn.setText("White Player's Turn");
+		}
 	}
 
 	public void gamePieces() {
@@ -250,27 +324,6 @@ public class BoardGui extends JFrame {
 		}
 		whitePoints.setText(String.valueOf(whiteScore));
 		blackPoints.setText(String.valueOf(blackScore));
-		//switch player's turn
-			if (player == 1) {
-				player = 2;
-				playersTurn.setText("Black Player's Turn");
-			} else {
-				player = 1;
-				playersTurn.setText("White Player's Turn");
-			}
-			try {
-			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
-			for (String hint : possibleMoves) {
-				int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
-				int row = Integer.parseInt(String.valueOf(hint.charAt(1)));
-				if (gameBoard[column][row].getIcon() == empty) {
-					gameBoard[column][row].setIcon(hintSpot);
-				}
-			}
-		} catch (NoMovesException e) {
-			JOptionPane.showMessageDialog(completePanel, "No valid moves.");
-		}
-
 	}
 
 	public void initialSetup() {
@@ -301,30 +354,23 @@ public class BoardGui extends JFrame {
 		whitePoints.setText(String.valueOf(whiteScore));
 		blackPoints.setText(String.valueOf(blackScore));
 
-		try {
-			ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
-			for (String hint : possibleMoves) {
-				int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
-				int row = Integer.parseInt(String.valueOf(hint.charAt(1)));
-				if (gameBoard[column][row].getIcon() == empty) {
-					gameBoard[column][row].setIcon(hintSpot);
-				}
+		// set hints for first round
+		ArrayList<String> possibleMoves = logicBoard.findPossibleMoves(player);
+		for (String hint : possibleMoves) {
+			int column = Integer.parseInt(String.valueOf(hint.charAt(0)));
+			int row = Integer.parseInt(String.valueOf(hint.charAt(1)));
+			if (gameBoard[column][row].getIcon() == empty) {
+				gameBoard[column][row].setIcon(hintSpot);
 			}
-		} catch (NoMovesException e) {
-			System.out.println("game over");
 		}
-
 	}
 
-	public void computersTurn() {
-		ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard,whitePoints, blackPoints, playersTurn);
-		thread.start();
-	}
 
 	public void restartGame() {
 		logicBoard = new BoardGame();
 		gamePieces();
 		player = 1;
+		displayHints(player);
 	}
 
 	public static void main(String[] args) {

@@ -26,8 +26,7 @@ public class BoardGame {
 		return board;
 	}
 
-	public ArrayList<String> findPossibleMoves(int currentPlayer)
-			throws NoMovesException {
+	public ArrayList<String> findPossibleMoves(int currentPlayer){
 		ArrayList<String> moves = new ArrayList<String>();
 		int row, column;
 		String move;
@@ -171,9 +170,9 @@ public class BoardGame {
 			}
 		}
 
-		if (moves.size() == 0) {
-			throw new NoMovesException();
-		}
+		//if (moves.size() == 0) {
+		//	throw new NoMovesException();
+		//}
 		return moves;
 	}
 

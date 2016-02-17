@@ -1,12 +1,16 @@
 package othello;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 public class ComputerTurnThread extends Thread {
 
@@ -22,7 +26,7 @@ public class ComputerTurnThread extends Thread {
 	private JLabel playersTurn;
 	private int whiteScore;
 	private int blackScore;
-	
+
 	private ArrayList<String> possibleMoves;
 
 	public ComputerTurnThread(BoardGame logicBoard, JButton[][] board, JLabel whitePoints, JLabel blackPoints,
@@ -45,77 +49,81 @@ public class ComputerTurnThread extends Thread {
 	public void run() {
 
 		// delay
+
 		try {
 			Thread.sleep(1000);
-
 			// get possible moves
-			possibleMoves = logicBoard.findPossibleMoves(player);
-
-			if (possibleMoves.size() != 0) {
+			possibleMoves = logicBoard.findPossibleMoves(2);
+			boolean avilMoves = hasMoves(possibleMoves);
+			if (avilMoves == false) {
 				// select random option of possible moves
 				int numOfChoices = possibleMoves.size();
 				Random rand = new Random();
 				int randomNum = rand.nextInt(numOfChoices);
 				String computerMove = possibleMoves.get(randomNum);
-
-				logicBoard.takeTurn(player, computerMove);
-
+				logicBoard.takeTurn(2, computerMove);
 				gamePieces();
-				//check for winner
+				switchPlayers(2);
+				// check for winner
 				Integer winner = logicBoard.isWinner();
 				if (winner != null) {
 					displayWinnerDialog(winner);
+					return;
 				}
-				else{
-				// switchPlayers
-				switchPlayers(player);
-				// display hints for user
-				possibleMoves = logicBoard.findPossibleMoves(player);
+				possibleMoves = logicBoard.findPossibleMoves(1);
+				avilMoves = hasMoves(possibleMoves);
+				if (avilMoves == true) {
+					displayHints(possibleMoves);
+				} else {
+					JOptionPane pane = new JOptionPane("You have no valid moves. Pass.", JOptionPane.INFORMATION_MESSAGE);
+					JDialog dialog = pane.createDialog(null, "Pass Turn");
+					dialog.setModal(false);
+					dialog.setVisible(true);
 
-				// if no valid moves for next player
-				if (possibleMoves.size() == 0) {
-					JOptionPane.showMessageDialog(null, "You have no valid moves. Pass");
-					// switch players
-					switchPlayers(player);
-					// set hints for computer
-					possibleMoves = logicBoard.findPossibleMoves(player);
-					// if no valid moves for computer - game over- no
-					// players have moves - display game winner
-					if (possibleMoves.size() == 0) {
-						// check for winner
+					int time_visible = 800;
+					new Timer(time_visible, new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							dialog.setVisible(false);
+						}
+					}).start();
+					
+					switchPlayers(1);
+					possibleMoves = logicBoard.findPossibleMoves(2);
+					avilMoves = hasMoves(possibleMoves);
+					if (avilMoves == true) {
+						displayHints(possibleMoves);
+						run();
+					} else {
 						winner = logicBoard.isWinner();
 						displayWinnerDialog(winner);
-					} else {
-						run();
+						return;
+
 					}
 				}
-				// display valid moves for next player
-				else {
-					displayHints(possibleMoves);
-				}
-				}
+
 			}
-			//computer has no possible moves
-			else{
-				//check if game is over
-				Integer winner = logicBoard.isWinner();
-				if (winner != null){
-					displayWinnerDialog(winner);
-				}
-				else{
-				JOptionPane.showMessageDialog(null, "Computer has no legal moves. Pass.");
-				switchPlayers(player);
-				possibleMoves = logicBoard.findPossibleMoves(player);
-				displayHints(possibleMoves);
-				}
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (
+
+		InterruptedException e)
+
+		{
+			JOptionPane.showMessageDialog(null, "Error. Please restart Game");
 		}
+
 	}
 
-	
+	public boolean hasMoves(ArrayList<String> possibleMoves) {
+		for (String move : possibleMoves) {
+			int column = Integer.parseInt(String.valueOf(move.charAt(0)));
+			int row = Integer.parseInt(String.valueOf(move.charAt(1)));
+			if (gameBoard[column][row].getIcon() == empty) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void switchPlayers(int playerNum) {
 		this.player = playerNum;
 		if (player == 1) {

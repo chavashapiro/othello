@@ -16,7 +16,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,9 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
-
-import javax.swing.Timer;
 
 public class BoardGui extends JFrame {
 
@@ -53,7 +49,9 @@ public class BoardGui extends JFrame {
 	private JLabel playersTurn;
 
 	private JButton againstCom;
+	private JButton againstComHard;
 	private boolean againstComputer;
+	private boolean againstComputerHard;
 	private JButton restart;
 
 	private ArrayList<String> possibleMoves;
@@ -108,16 +106,30 @@ public class BoardGui extends JFrame {
 		});
 
 		againstComputer = false;
-		againstCom = new JButton("Play Against Computer");
+		againstCom = new JButton("Play Against Computer - EASY");
 		againstCom.setAlignmentX(Component.CENTER_ALIGNMENT);
 		againstCom.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				againstComputer = true;
+				againstComputerHard = false;
 
 			}
 
+		});
+		
+		againstComputerHard = false;
+		againstComHard = new JButton ("Play Against Computer - HARD");
+		againstComHard.setAlignmentX(Component.CENTER_ALIGNMENT);
+		againstComHard.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				againstComputerHard = true;
+				againstComputer = false;
+			}
+			
 		});
 
 		JPanel buttonPanel = new JPanel();
@@ -190,6 +202,8 @@ public class BoardGui extends JFrame {
 		buttons.setBackground(Color.BLACK);
 		buttons.add(againstCom);
 		buttons.add(Box.createRigidArea(new Dimension(10, 10)));
+		buttons.add(againstComHard);
+		buttons.add(Box.createRigidArea(new Dimension(10, 10)));
 		buttons.add(restart);
 
 		centerSideBar.add(turnPlayer, BorderLayout.NORTH);
@@ -220,6 +234,7 @@ public class BoardGui extends JFrame {
 						
 						if (againstComputer == false) {
 							againstCom.setEnabled(false);
+							againstComHard.setEnabled(false);
 							// get valid moves
 							possibleMoves = logicBoard.findPossibleMoves(player);
 							String move = String.valueOf(row) + String.valueOf(column);
@@ -272,8 +287,9 @@ public class BoardGui extends JFrame {
 									}
 								}
 							}
-						} else {// PLAYING AGAINST COMPUTER
+						} else if (againstComputer == true){// PLAYING AGAINST COMPUTER - EASY
 								// get valid moves display hints
+							againstComHard.setEnabled(false);
 							Integer winners = logicBoard.isWinner();
 							if (winners != null){
 								displayWinnerDialog(winners);
@@ -308,7 +324,45 @@ public class BoardGui extends JFrame {
 									blackPoints, whiteScore, blackScore, playersTurn);
 							thread.start();
 							}
+						}// PLAYING AGAINST COMPUTER - HARD 
+						else if (againstComputerHard == true){
+							againstCom.setEnabled(false);
+							// get valid moves display hints
+						Integer winners = logicBoard.isWinner();
+						if (winners != null){
+							displayWinnerDialog(winners);
+							return;
 						}
+						gamePieces();
+						player = 2;
+						switchPlayers(player);
+						possibleMoves = logicBoard.findPossibleMoves(1);
+
+						displayHints(1);
+						String tempmove = String.valueOf(row) + String.valueOf(column);
+						// check if spot is valid
+						if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2
+								&& possibleMoves.contains(tempmove)) {
+							// spot is valid so take turn
+							logicBoard.takeTurn(1, tempmove);
+							// reset gui
+							gamePieces();
+							switchPlayers(player);
+							// check if there is a winner
+							winners = logicBoard.isWinner();
+							if (winners != null) {
+								displayWinnerDialog(winners);
+								return;
+							}
+						
+						// displays computer's hints
+						displayHints(2);
+						// computer takes turn
+						ComputerHardThread thread = new ComputerHardThread(logicBoard, gameBoard, whitePoints,
+								blackPoints, whiteScore, blackScore, playersTurn);
+						thread.start();
+						}
+					}
 						// spot is not valid - TAKE NO ACTION
 					}
 				});
@@ -438,6 +492,8 @@ public class BoardGui extends JFrame {
 		displayHints(player);
 		againstComputer = false;
 		againstCom.setEnabled(true);
+		againstComputerHard = false;
+		againstComHard.setEnabled(true);
 	}
 
 	public static void main(String[] args) {

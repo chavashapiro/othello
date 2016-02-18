@@ -42,6 +42,7 @@ public class BoardGame {
 					row = i;
 					column = j;
 					if (row - 1 >= 0 && board[row - 1][column] == otherPlayer) {
+
 						while (row - 1 >= 0 && board[row - 1][column] == otherPlayer) {
 							row--;
 						}
@@ -54,6 +55,7 @@ public class BoardGame {
 					// test down
 					row = i;
 					column = j;
+
 					if (row + 1 < board.length && board[row + 1][column] == otherPlayer) {
 						while (row + 1 < board.length && board[row + 1][column] == otherPlayer) {
 							row++;
@@ -67,6 +69,7 @@ public class BoardGame {
 					// test left
 					row = i;
 					column = j;
+
 					if (column - 1 >= 0 && board[row][column - 1] == otherPlayer) {
 						while (column - 1 >= 0 && board[row][column - 1] == otherPlayer) {
 							column--;
@@ -80,6 +83,7 @@ public class BoardGame {
 					// test right
 					row = i;
 					column = j;
+
 					if (column + 1 < board[0].length && board[row][column + 1] == otherPlayer) {
 						while (column + 1 < board[0].length && board[row][column + 1] == otherPlayer) {
 							column++;
@@ -93,6 +97,7 @@ public class BoardGame {
 					// test diagonal up and left
 					row = i;
 					column = j;
+
 					if (row - 1 >= 0 && column - 1 >= 0 && board[row - 1][column - 1] == otherPlayer) {
 						while (row - 1 >= 0 && column - 1 >= 0 && board[row - 1][column - 1] == otherPlayer) {
 							row--;
@@ -107,6 +112,7 @@ public class BoardGame {
 					// test diagonal down and left
 					row = i;
 					column = j;
+
 					if (row + 1 < board.length && column - 1 >= 0 && board[row + 1][column - 1] == otherPlayer) {
 						while (row + 1 < board.length && column - 1 >= 0 && board[row + 1][column - 1] == otherPlayer) {
 							row++;
@@ -138,6 +144,7 @@ public class BoardGame {
 					column = j;
 					if (row + 1 < board.length && column + 1 < board[0].length
 							&& board[row + 1][column + 1] == otherPlayer) {
+
 						while (row + 1 < board.length && column + 1 < board[0].length
 								&& board[row + 1][column + 1] == otherPlayer) {
 							row++;
@@ -175,7 +182,6 @@ public class BoardGame {
 		// up
 		row = moveRow;
 		column = moveColumn;
-
 		if (row - 1 > 0) {
 			while (board[row - 1][column] == otherPlayer) {
 				row--;
@@ -547,17 +553,15 @@ public class BoardGame {
 
 		// if spaces size is not 0 meaning there are pieces to be flipped, flip
 		// them and change the piece the player clicked
-		/*if (spaces.size() != 0) {
-			// switch all spaces in the array to currentPlayer's color
-			for (String space : spaces) {
-				String[] spaceTokens = space.split("");
-				row = Integer.parseInt(spaceTokens[0]);
-				column = Integer.parseInt(spaceTokens[1]);
-				board[row][column] = currentPlayer;
-			}
-			// change the space the player clicked to currentPlayer's color
-			board[moveRow][moveColumn] = currentPlayer;
-		}*/
+		/*
+		 * if (spaces.size() != 0) { // switch all spaces in the array to
+		 * currentPlayer's color for (String space : spaces) { String[]
+		 * spaceTokens = space.split(""); row =
+		 * Integer.parseInt(spaceTokens[0]); column =
+		 * Integer.parseInt(spaceTokens[1]); board[row][column] = currentPlayer;
+		 * } // change the space the player clicked to currentPlayer's color
+		 * board[moveRow][moveColumn] = currentPlayer; }
+		 */
 		return spaces;
 	}
 }

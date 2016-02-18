@@ -77,7 +77,8 @@ public class ComputerTurnThread extends Thread {
 				if (avilMoves == true) {
 					displayHints(possibleMoves);
 				} else {
-					JOptionPane pane = new JOptionPane("You have no valid moves. Pass.", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane pane = new JOptionPane("You have no valid moves. Pass.",
+							JOptionPane.INFORMATION_MESSAGE);
 					JDialog dialog = pane.createDialog(null, "Pass Turn");
 					dialog.setModal(false);
 					dialog.setVisible(true);
@@ -89,7 +90,7 @@ public class ComputerTurnThread extends Thread {
 							dialog.setVisible(false);
 						}
 					}).start();
-					
+
 					switchPlayers(1);
 					possibleMoves = logicBoard.findPossibleMoves(2);
 					avilMoves = hasMoves(possibleMoves);

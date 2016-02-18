@@ -58,11 +58,8 @@ public class BoardGui extends JFrame {
 
 	private ArrayList<String> possibleMoves;
 	private boolean haveMoves;
-	
-	
 
 	public BoardGui() {
-
 
 		// SETTING UP BOARD GUI//
 		setTitle("Othello");
@@ -123,11 +120,11 @@ public class BoardGui extends JFrame {
 			}
 
 		});
-		
+
 		againstComputerHard = false;
-		againstComHard = new JButton ("Play Against Computer - HARD");
+		againstComHard = new JButton("Play Against Computer - HARD");
 		againstComHard.setAlignmentX(Component.CENTER_ALIGNMENT);
-		againstComHard.addActionListener(new ActionListener(){
+		againstComHard.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -137,15 +134,15 @@ public class BoardGui extends JFrame {
 				twoPlayers.setEnabled(false);
 				againstCom.setEnabled(false);
 			}
-			
+
 		});
-		
+
 		againstPlayer = false;
 		twoPlayers = new JButton("Play with 2 Plalyers");
 		twoPlayers.setAlignmentX(Component.CENTER_ALIGNMENT);
-		twoPlayers.addActionListener(new ActionListener(){
-			
-			public void actionPerformed(ActionEvent event){
+		twoPlayers.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent event) {
 				againstPlayer = true;
 				againstComputerHard = false;
 				againstComputer = false;
@@ -254,10 +251,9 @@ public class BoardGui extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						
-						
+
 						if (againstComputer == false && againstComputerHard == false) {
-							
+
 							// get valid moves
 							possibleMoves = logicBoard.findPossibleMoves(player);
 							String move = String.valueOf(row) + String.valueOf(column);
@@ -310,11 +306,13 @@ public class BoardGui extends JFrame {
 									}
 								}
 							}
-						} else if (againstComputer == true){// PLAYING AGAINST COMPUTER - EASY
-								// get valid moves display hints
-							
+						} else if (againstComputer == true) {// PLAYING AGAINST
+																// COMPUTER -
+																// EASY
+							// get valid moves display hints
+
 							Integer winners = logicBoard.isWinner();
-							if (winners != null){
+							if (winners != null) {
 								displayWinnerDialog(winners);
 								return;
 							}
@@ -339,54 +337,54 @@ public class BoardGui extends JFrame {
 									displayWinnerDialog(winners);
 									return;
 								}
-							
-							// displays computer's hints
-							displayHints(2);
-							// computer takes turn
-							ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard, whitePoints,
-									blackPoints, whiteScore, blackScore, playersTurn);
-							thread.start();
-							gamePieces();
-							}
-						}// PLAYING AGAINST COMPUTER - HARD 
-						else if (againstComputerHard == true){
-							
-							// get valid moves display hints
-						Integer winners = logicBoard.isWinner();
-						if (winners != null){
-							displayWinnerDialog(winners);
-							return;
-						}
-						gamePieces();
-						player = 2;
-						switchPlayers(player);
-						possibleMoves = logicBoard.findPossibleMoves(1);
 
-						displayHints(1);
-						String tempmove = String.valueOf(row) + String.valueOf(column);
-						// check if spot is valid
-						if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2
-								&& possibleMoves.contains(tempmove)) {
-							// spot is valid so take turn
-							logicBoard.takeTurn(1, tempmove);
-							// reset gui
-							gamePieces();
-							switchPlayers(player);
-							// check if there is a winner
-							winners = logicBoard.isWinner();
+								// displays computer's hints
+								displayHints(2);
+								// computer takes turn
+								ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard, whitePoints,
+										blackPoints, whiteScore, blackScore, playersTurn);
+								thread.start();
+								gamePieces();
+							}
+						} // PLAYING AGAINST COMPUTER - HARD
+						else if (againstComputerHard == true) {
+
+							// get valid moves display hints
+							Integer winners = logicBoard.isWinner();
 							if (winners != null) {
 								displayWinnerDialog(winners);
 								return;
 							}
-						
-						// displays computer's hints
-						displayHints(2);
-						// computer takes turn
-						ComputerHardThread thread = new ComputerHardThread(logicBoard, gameBoard, whitePoints,
-								blackPoints, whiteScore, blackScore, playersTurn);
-						thread.start();
+							gamePieces();
+							player = 2;
+							switchPlayers(player);
+							possibleMoves = logicBoard.findPossibleMoves(1);
+
+							displayHints(1);
+							String tempmove = String.valueOf(row) + String.valueOf(column);
+							// check if spot is valid
+							if (logicBoard.getBoard()[row][column] != 1 && logicBoard.getBoard()[row][column] != 2
+									&& possibleMoves.contains(tempmove)) {
+								// spot is valid so take turn
+								logicBoard.takeTurn(1, tempmove);
+								// reset gui
+								gamePieces();
+								switchPlayers(player);
+								// check if there is a winner
+								winners = logicBoard.isWinner();
+								if (winners != null) {
+									displayWinnerDialog(winners);
+									return;
+								}
+
+								// displays computer's hints
+								displayHints(2);
+								// computer takes turn
+								ComputerHardThread thread = new ComputerHardThread(logicBoard, gameBoard, whitePoints,
+										blackPoints, whiteScore, blackScore, playersTurn);
+								thread.start();
+							}
 						}
-					}
 						// spot is not valid - TAKE NO ACTION
 					}
 				});
@@ -435,7 +433,7 @@ public class BoardGui extends JFrame {
 		}
 
 		JOptionPane.showMessageDialog(null, message);
-		
+
 	}
 
 	public void switchPlayers(int playerNum) {

@@ -138,38 +138,35 @@ public class ComputerHardThread extends Thread {
 						displayWinnerDialog(winner);
 						return;
 
-					}return;
-				}
-
-			}/* else if (avilMoves == true) {
-
-				JOptionPane pane = new JOptionPane("You have no valid moves. Pass.", JOptionPane.INFORMATION_MESSAGE);
-				JDialog dialog = pane.createDialog(null, "Pass Turn");
-				dialog.setModal(false);
-				dialog.setVisible(true);
-
-				int time_visible = 800;
-				new Timer(time_visible, new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						dialog.setVisible(false);
 					}
-				}).start();
-
-				switchPlayers(1);
-				possibleMoves = logicBoard.findPossibleMoves(2);
-				avilMoves = hasMoves(possibleMoves);
-				if (avilMoves == true) {
-					displayHints(possibleMoves);
-					run();
-				} else {
-					Integer winner = logicBoard.isWinner();
-					displayWinnerDialog(winner);
 					return;
-
 				}
 
-			}*/
+			} /*
+				 * else if (avilMoves == true) {
+				 * 
+				 * JOptionPane pane = new JOptionPane(
+				 * "You have no valid moves. Pass.",
+				 * JOptionPane.INFORMATION_MESSAGE); JDialog dialog =
+				 * pane.createDialog(null, "Pass Turn"); dialog.setModal(false);
+				 * dialog.setVisible(true);
+				 * 
+				 * int time_visible = 800; new Timer(time_visible, new
+				 * ActionListener() {
+				 * 
+				 * @Override public void actionPerformed(ActionEvent e) {
+				 * dialog.setVisible(false); } }).start();
+				 * 
+				 * switchPlayers(1); possibleMoves =
+				 * logicBoard.findPossibleMoves(2); avilMoves =
+				 * hasMoves(possibleMoves); if (avilMoves == true) {
+				 * displayHints(possibleMoves); run(); } else { Integer winner =
+				 * logicBoard.isWinner(); displayWinnerDialog(winner); return;
+				 * 
+				 * }
+				 * 
+				 * }
+				 */
 		} catch (
 
 		InterruptedException e)

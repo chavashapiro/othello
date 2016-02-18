@@ -75,13 +75,13 @@ public class ComputerHardThread extends Thread {
 					if (avilMove.equals("00") || avilMove.equals("77") || avilMove.equals("07")
 							|| avilMove.equals("70")) {
 						bestMoveIndex = counter;
+						corner = true;
 						break;
 
 					}
 					if (avilMove.charAt(0) == ('0') || avilMove.charAt(0) == ('7') || avilMove.charAt(1) == ('0')
 							|| avilMove.charAt(1) == ('7')) {
 						borderMoves.add(avilMove);
-						corner = true;
 						break;
 
 					}

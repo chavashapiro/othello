@@ -53,7 +53,6 @@ public class BoardGui extends JFrame {
 	private JButton twoPlayers;
 	private boolean againstComputer;
 	private boolean againstComputerHard;
-	private boolean againstPlayer;
 	private JButton restart;
 
 	private ArrayList<String> possibleMoves;
@@ -113,7 +112,6 @@ public class BoardGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				againstComputer = true;
 				againstComputerHard = false;
-				againstPlayer = false;
 				againstComHard.setEnabled(false);
 				twoPlayers.setEnabled(false);
 
@@ -130,20 +128,17 @@ public class BoardGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				againstComputerHard = true;
 				againstComputer = false;
-				againstPlayer = false;
 				twoPlayers.setEnabled(false);
 				againstCom.setEnabled(false);
 			}
 
 		});
 
-		againstPlayer = false;
-		twoPlayers = new JButton("Play with 2 Plalyers");
+		twoPlayers = new JButton("Play with 2 Players");
 		twoPlayers.setAlignmentX(Component.CENTER_ALIGNMENT);
 		twoPlayers.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent event) {
-				againstPlayer = true;
 				againstComputerHard = false;
 				againstComputer = false;
 				againstCom.setEnabled(false);
@@ -152,7 +147,6 @@ public class BoardGui extends JFrame {
 		});
 
 		JPanel buttonPanel = new JPanel();
-		// buttonPanel.add(againstCom);
 		buttonPanel.setBackground(Color.BLACK);
 
 		JPanel buttonPanelRestart = new JPanel();
@@ -163,7 +157,7 @@ public class BoardGui extends JFrame {
 		othello.setForeground(Color.WHITE);
 		othello.setFont(new Font(othello.getFont().getName(), othello.getFont().getStyle(), 48));
 
-		String text = "\n Object of the game is to get the majority of the color disks at the end of "
+		String text = " Object of the game is to get the majority of the color disks at the end of "
 				+ "the game. \n To Play: Click on one of the boxes to place disk. At least one disk "
 				+ "must flip each turn.  If there are no legal moves player takes a pass.  \n End of "
 				+ "game: All the places are filled or there are no more legal moves. \n";
@@ -306,11 +300,9 @@ public class BoardGui extends JFrame {
 									}
 								}
 							}
-						} else if (againstComputer == true) {// PLAYING AGAINST
-																// COMPUTER -
-																// EASY
+						} else if (againstComputer == true) {
+							// PLAYING AGAINST COMPUTER -EASY
 							// get valid moves display hints
-
 							Integer winners = logicBoard.isWinner();
 							if (winners != null) {
 								displayWinnerDialog(winners);

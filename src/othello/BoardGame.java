@@ -551,17 +551,6 @@ public class BoardGame {
 			}
 		}
 
-		// if spaces size is not 0 meaning there are pieces to be flipped, flip
-		// them and change the piece the player clicked
-		/*
-		 * if (spaces.size() != 0) { // switch all spaces in the array to
-		 * currentPlayer's color for (String space : spaces) { String[]
-		 * spaceTokens = space.split(""); row =
-		 * Integer.parseInt(spaceTokens[0]); column =
-		 * Integer.parseInt(spaceTokens[1]); board[row][column] = currentPlayer;
-		 * } // change the space the player clicked to currentPlayer's color
-		 * board[moveRow][moveColumn] = currentPlayer; }
-		 */
 		return spaces;
 	}
 }

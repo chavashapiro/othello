@@ -138,11 +138,11 @@ public class ComputerTurnThread extends Thread {
 	public void displayWinnerDialog(int winner) {
 		String message;
 		if (winner == 0) {
-			message = "Players tied! Great Job!";
+			message = "You tied the computer! Great Job!";
 		} else if (winner == 1) {
-			message = "White player won! Great Job!";
+			message = "You won! Great Job!";
 		} else if (winner == 2) {
-			message = "Black player won! Great Job!";
+			message = "Computer won! Better luck next time!";
 		} else {
 			message = "Error.  Please replay game!";
 		}

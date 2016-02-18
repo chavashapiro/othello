@@ -232,7 +232,7 @@ public class BoardGui extends JFrame {
 					public void actionPerformed(ActionEvent arg0) {
 						
 						
-						if (againstComputer == false) {
+						if (againstComputer == false && againstComputerHard == false) {
 							againstCom.setEnabled(false);
 							againstComHard.setEnabled(false);
 							// get valid moves
@@ -323,6 +323,7 @@ public class BoardGui extends JFrame {
 							ComputerTurnThread thread = new ComputerTurnThread(logicBoard, gameBoard, whitePoints,
 									blackPoints, whiteScore, blackScore, playersTurn);
 							thread.start();
+							gamePieces();
 							}
 						}// PLAYING AGAINST COMPUTER - HARD 
 						else if (againstComputerHard == true){

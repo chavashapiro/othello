@@ -35,8 +35,8 @@ public class ComputerHardThread extends Thread {
 		this.playersTurn = playersTurn;
 		this.whiteScore = whiteScore;
 		this.blackScore = blackScore;
-		this.whitePoints = new JLabel(String.valueOf(this.whiteScore));
-		this.blackPoints = new JLabel(String.valueOf(this.whiteScore));
+		this.whitePoints = whitePoints;
+		this.blackPoints = blackPoints;
 
 		black = new ImageIcon("othelloBlack.png");
 		white = new ImageIcon("othelloWhite.png");
@@ -51,6 +51,8 @@ public class ComputerHardThread extends Thread {
 
 		try {
 			Thread.sleep(1000);
+			whitePoints.setText(String.valueOf(whiteScore));
+			blackPoints.setText(String.valueOf(blackScore));
 			// get possible moves
 			possibleMoves = logicBoard.findPossibleMoves(2);
 			boolean avilMoves = hasMoves(possibleMoves);
@@ -60,18 +62,42 @@ public class ComputerHardThread extends Thread {
 				int amountFlipped = 0;
 				int mostFlipped = 0;
 				int bestMoveIndex = 0;
-				//***FIND BEST MOVE***//
-				for (String avilMove : possibleMoves){
+				ArrayList<String> borderMoves = new ArrayList<String>();
+				borderMoves.clear();
+				boolean corner = false;
+				// ***FIND BEST MOVE***//
+				for (String avilMove : possibleMoves) {
 					amountFlipped = logicBoard.takeTurnFlipped(2, avilMove).size();
-					if (amountFlipped > mostFlipped){
+					if (amountFlipped > mostFlipped) {
 						mostFlipped = amountFlipped;
 						bestMoveIndex = counter;
 					}
-					if (avilMove.equals("00") || avilMove.equals("77")|| avilMove.equals("07") || avilMove.equals("70")){
+					if (avilMove.equals("00") || avilMove.equals("77") || avilMove.equals("07")
+							|| avilMove.equals("70")) {
 						bestMoveIndex = counter;
 						break;
+
+					}
+					// add in around edge
+					if (avilMove.charAt(0) == ('0') || avilMove.charAt(0) == ('7') || avilMove.charAt(1) == ('0')
+							|| avilMove.charAt(1) == ('7')) {
+						borderMoves.add(avilMove);
+						corner = true;
+						break;
+
 					}
 					counter++;
+				}
+				if (corner == false) {
+					if (borderMoves.size() > 0) {
+						mostFlipped = 0;
+						for (int i = 0; i < borderMoves.size(); i++) {
+							amountFlipped = logicBoard.takeTurnFlipped(2, borderMoves.get(i)).size();
+							if (amountFlipped > mostFlipped) {
+								bestMoveIndex = i;
+							}
+						}
+					}
 				}
 				computerMove = possibleMoves.get(bestMoveIndex);
 				logicBoard.takeTurn(2, computerMove);
@@ -88,7 +114,8 @@ public class ComputerHardThread extends Thread {
 				if (avilMoves == true) {
 					displayHints(possibleMoves);
 				} else {
-					JOptionPane pane = new JOptionPane("You have no valid moves. Pass.", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane pane = new JOptionPane("You have no valid moves. Pass.",
+							JOptionPane.INFORMATION_MESSAGE);
 					JDialog dialog = pane.createDialog(null, "Pass Turn");
 					dialog.setModal(false);
 					dialog.setVisible(true);
@@ -100,7 +127,7 @@ public class ComputerHardThread extends Thread {
 							dialog.setVisible(false);
 						}
 					}).start();
-					
+
 					switchPlayers(1);
 					possibleMoves = logicBoard.findPossibleMoves(2);
 					avilMoves = hasMoves(possibleMoves);
@@ -112,11 +139,10 @@ public class ComputerHardThread extends Thread {
 						displayWinnerDialog(winner);
 						return;
 
-					}
+					}return;
 				}
 
-			}
-			else if (avilMoves == true){
+			} else if (avilMoves == true) {
 
 				JOptionPane pane = new JOptionPane("You have no valid moves. Pass.", JOptionPane.INFORMATION_MESSAGE);
 				JDialog dialog = pane.createDialog(null, "Pass Turn");
@@ -130,7 +156,7 @@ public class ComputerHardThread extends Thread {
 						dialog.setVisible(false);
 					}
 				}).start();
-				
+
 				switchPlayers(1);
 				possibleMoves = logicBoard.findPossibleMoves(2);
 				avilMoves = hasMoves(possibleMoves);
@@ -143,7 +169,7 @@ public class ComputerHardThread extends Thread {
 					return;
 
 				}
-			
+
 			}
 		} catch (
 
@@ -180,11 +206,11 @@ public class ComputerHardThread extends Thread {
 	public void displayWinnerDialog(int winner) {
 		String message;
 		if (winner == 0) {
-			message = "Players tied! Great Job!";
+			message = "You tied the computer! Great Job!";
 		} else if (winner == 1) {
-			message = "White player won! Great Job!";
+			message = "You won! Great Job!";
 		} else if (winner == 2) {
-			message = "Black player won! Great Job!";
+			message = "Computer won! Better luck next time!";
 		} else {
 			message = "Error.  Please replay game!";
 		}

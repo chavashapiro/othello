@@ -78,7 +78,6 @@ public class ComputerHardThread extends Thread {
 						break;
 
 					}
-					// add in around edge
 					if (avilMove.charAt(0) == ('0') || avilMove.charAt(0) == ('7') || avilMove.charAt(1) == ('0')
 							|| avilMove.charAt(1) == ('7')) {
 						borderMoves.add(avilMove);
@@ -142,7 +141,7 @@ public class ComputerHardThread extends Thread {
 					}return;
 				}
 
-			} else if (avilMoves == true) {
+			}/* else if (avilMoves == true) {
 
 				JOptionPane pane = new JOptionPane("You have no valid moves. Pass.", JOptionPane.INFORMATION_MESSAGE);
 				JDialog dialog = pane.createDialog(null, "Pass Turn");
@@ -170,7 +169,7 @@ public class ComputerHardThread extends Thread {
 
 				}
 
-			}
+			}*/
 		} catch (
 
 		InterruptedException e)

@@ -50,8 +50,10 @@ public class BoardGui extends JFrame {
 
 	private JButton againstCom;
 	private JButton againstComHard;
+	private JButton twoPlayers;
 	private boolean againstComputer;
 	private boolean againstComputerHard;
+	private boolean againstPlayer;
 	private JButton restart;
 
 	private ArrayList<String> possibleMoves;
@@ -114,6 +116,9 @@ public class BoardGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				againstComputer = true;
 				againstComputerHard = false;
+				againstPlayer = false;
+				againstComHard.setEnabled(false);
+				twoPlayers.setEnabled(false);
 
 			}
 
@@ -128,8 +133,25 @@ public class BoardGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				againstComputerHard = true;
 				againstComputer = false;
+				againstPlayer = false;
+				twoPlayers.setEnabled(false);
+				againstCom.setEnabled(false);
 			}
 			
+		});
+		
+		againstPlayer = false;
+		twoPlayers = new JButton("Play with 2 Plalyers");
+		twoPlayers.setAlignmentX(Component.CENTER_ALIGNMENT);
+		twoPlayers.addActionListener(new ActionListener(){
+			
+			public void actionPerformed(ActionEvent event){
+				againstPlayer = true;
+				againstComputerHard = false;
+				againstComputer = false;
+				againstCom.setEnabled(false);
+				againstComHard.setEnabled(false);
+			}
 		});
 
 		JPanel buttonPanel = new JPanel();
@@ -200,6 +222,8 @@ public class BoardGui extends JFrame {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
 		buttons.setBackground(Color.BLACK);
+		buttons.add(twoPlayers);
+		buttons.add(Box.createRigidArea(new Dimension(10, 10)));
 		buttons.add(againstCom);
 		buttons.add(Box.createRigidArea(new Dimension(10, 10)));
 		buttons.add(againstComHard);
@@ -233,8 +257,7 @@ public class BoardGui extends JFrame {
 						
 						
 						if (againstComputer == false && againstComputerHard == false) {
-							againstCom.setEnabled(false);
-							againstComHard.setEnabled(false);
+							
 							// get valid moves
 							possibleMoves = logicBoard.findPossibleMoves(player);
 							String move = String.valueOf(row) + String.valueOf(column);
@@ -289,7 +312,7 @@ public class BoardGui extends JFrame {
 							}
 						} else if (againstComputer == true){// PLAYING AGAINST COMPUTER - EASY
 								// get valid moves display hints
-							againstComHard.setEnabled(false);
+							
 							Integer winners = logicBoard.isWinner();
 							if (winners != null){
 								displayWinnerDialog(winners);
@@ -327,7 +350,7 @@ public class BoardGui extends JFrame {
 							}
 						}// PLAYING AGAINST COMPUTER - HARD 
 						else if (againstComputerHard == true){
-							againstCom.setEnabled(false);
+							
 							// get valid moves display hints
 						Integer winners = logicBoard.isWinner();
 						if (winners != null){

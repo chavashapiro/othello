@@ -36,8 +36,8 @@ public class ComputerTurnThread extends Thread {
 		this.playersTurn = playersTurn;
 		this.whiteScore = whiteScore;
 		this.blackScore = blackScore;
-		this.whitePoints = new JLabel(String.valueOf(this.whiteScore));
-		this.blackPoints = new JLabel(String.valueOf(this.whiteScore));
+		this.whitePoints = whitePoints;
+		this.blackPoints = blackPoints;
 
 		black = new ImageIcon("othelloBlack.png");
 		white = new ImageIcon("othelloWhite.png");
@@ -53,6 +53,8 @@ public class ComputerTurnThread extends Thread {
 		try {
 			Thread.sleep(1000);
 			// get possible moves
+			whitePoints.setText(String.valueOf(whiteScore));
+			blackPoints.setText(String.valueOf(blackScore));
 			possibleMoves = logicBoard.findPossibleMoves(2);
 			boolean avilMoves = hasMoves(possibleMoves);
 			if (avilMoves == false) {
